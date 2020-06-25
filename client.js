@@ -5,17 +5,17 @@ const client = new GreeterClient("http://localhost:8080");
 
 const request = new HelloRequest();
 
-let counter = 1;
 const getData = () => {
-  request.setName(`${counter}: gRPC`);
-  counter++;
+  request.setName("gRPC");
   client.sayHello(request, {}, (err, response) => {
-    if (response) {
+    if (err) {
+      const textElement = document.getElementById("error").innerText;
+      document.getElementById("error").innerText =
+        textElement + "\n" + err.message;
+    } else if (response) {
       const textElement = document.getElementById("output").innerText;
       document.getElementById("output").innerText =
         textElement + "\n" + response.getMessage();
-
-      console.log(response.getMessage());
     }
   });
 };
@@ -24,4 +24,4 @@ getData();
 
 setTimeout(() => {
   document.getElementById("try-again").onclick = getData;
-}, 2000);
+}, 1000);

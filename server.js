@@ -15,9 +15,18 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 const helloGretter = protoDescriptor.hellogreeter;
 
+let counter = 0;
 function doSayHello(call, callBack) {
+  counter++;
+  if (counter % 3 === 0) {
+    return callBack({
+      code: grpc.status.INVALID_ARGUMENT,
+      message: `${counter / 3}: Counter 3 error`,
+    });
+  }
+
   callBack(null, {
-    message: `Hello! ${call.request.name}`,
+    message: `${counter}: Hello! ${call.request.name}`,
   });
 }
 
