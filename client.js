@@ -1,12 +1,16 @@
-const { HelloRequest, HelloReply } = require("./hellogreeter_pb");
+const { HelloRequest, RequestMessage } = require("./hellogreeter_pb");
 const { GreeterClient } = require("./hellogreeter_grpc_web_pb");
 
-const client = new GreeterClient("http://localhost:8080");
+const client = new GreeterClient("http://localhost:8082");
 
 const request = new HelloRequest();
+const requestBody = new RequestMessage();
 
 const getData = () => {
-  request.setName("gRPC");
+  requestBody.setOperation("REPLACE");
+  requestBody.setField("name");
+  requestBody.setValue("New Name");
+  request.addRequest(requestBody);
   client.sayHello(request, {}, (err, response) => {
     if (err) {
       const textElement = document.getElementById("error").innerText;
@@ -15,7 +19,11 @@ const getData = () => {
     } else if (response) {
       const textElement = document.getElementById("output").innerText;
       document.getElementById("output").innerText =
-        textElement + "\n" + response.getMessage();
+        textElement +
+        "\n" +
+        response.getPreferredname() +
+        ", " +
+        response.getSecuritymobile();
     }
   });
 };

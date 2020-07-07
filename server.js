@@ -26,7 +26,13 @@ function doSayHello(call, callBack) {
   }
 
   callBack(null, {
-    message: `${counter}: Hello! ${call.request.name}`,
+    _id: "8cb99651-aaaa-aaaa-aaaa-16988b37fbf7",
+    preferredName: "提姆 🍔",
+    identityAssuranceLevel: 3,
+    securityMobile: "+12345678900",
+    status: "Active",
+    securityEmail: "awesometim-long_lengthy-email_let-try@example.com",
+    sanctionsVerified: true,
   });
 }
 

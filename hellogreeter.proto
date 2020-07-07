@@ -1,15 +1,31 @@
 syntax = "proto3";
 
+// import "google/api/annotations.proto";
+
 package hellogreeter;
 
 service Greeter {
-    rpc SayHello (HelloRequest) returns  (HelloReply);
+    rpc SayHello (HelloRequest) returns (HelloReply){
+
+    }
+}
+
+message RequestMessage {
+    string operation = 1;
+    string field = 2;
+    string value = 3;
 }
 
 message HelloRequest {
-    string name = 1;
+    repeated RequestMessage request = 1;
 }
 
 message HelloReply {
-    string message = 1;
+    string _id = 1;
+    string preferredName = 2;
+    double identityAssuranceLevel = 3;
+    string securityMobile = 4;
+    string status = 5;
+    string securityEmail = 6;
+    bool sanctionsVerified = 7;
 }
