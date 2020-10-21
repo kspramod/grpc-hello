@@ -8,7 +8,7 @@
     "start": "run-p -r start:api serve:client",
     "build": "webpack client.js --mode=production",
     "start:api": "node server.js",
-    "start:client": "python3 -m http.server 8081",
+    "start:client": "python3 -m http.server 8081 -d ./dist/",
     "serve:client": "run-s build start:client"
   },
   "author": "kspramod",
@@ -29,6 +29,6 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "@anzx/fabricapis-selfservice": "./packages/fabricapis-selfservice-0.2.3-npm.tgz"
+    "@kspramod/fabricapis-selfservice": "^0.1.1"
   }
 }
