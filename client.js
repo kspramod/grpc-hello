@@ -52,15 +52,33 @@ const getData = ({ name, userName, password }) => {
   );
 };
 
-const clientAccounts = new AccountAPIClient("https://fabric.gcpnp.anz");
+const clientAccounts = new AccountAPIClient(
+  "https://abt-13800-fabric.identity-services-ldev-edge.apps-dev.x.gcpnp.anz",
+  null,
+  {
+    withCredentials: true,
+  }
+);
 const requestAccount = new GetAccountListRequest();
+
+const getParams = (pamramKey) => {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  return urlParams.get(pamramKey) || "";
+};
+
+document.cookie = `anzssotoken=${getParams(
+  "token"
+)}; path=/; domain=.gcpnp.anz; secure; samesite=lax`;
 
 const getAccounts = ({ name, userName, password }) => {
   clientAccounts.getAccountList(
     requestAccount,
     {
       env: "sit",
-      authorization: `Basic ${btoa(`${userName}:${password}`)}`,
+      // authorization: `Basic ${btoa(`${userName}:${password}`)}`,
+      // authorization: `Bearer c_Ft3oO2bB3HAlGmxzx1cjUb9c8.*AAJTSQACMDIAAlNLABx1ZDBTcEVGSEt2NlVLYm1Ub1pGaExYRnpBRHc9AAR0eXBlAANDVFMAAlMxAAIwMQ..*`,
+      // Cookie: `anzssotoken=c_Ft3oO2bB3HAlGmxzx1cjUb9c8.*AAJTSQACMDIAAlNLABx1ZDBTcEVGSEt2NlVLYm1Ub1pGaExYRnpBRHc9AAR0eXBlAANDVFMAAlMxAAIwMQ..*`,
     },
     (err, response) => {
       if (err) {
