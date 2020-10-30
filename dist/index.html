@@ -21,15 +21,126 @@
       #output {
         border-right: 1px solid grey;
       }
+
+      table {
+        border: 1px solid black;
+        border-spacing: 0;
+      }
+
+      td {
+        padding: 16px;
+        border-top: 1px solid black;
+      }
+
+      th {
+        padding: 8px;
+      }
+
+      .x-broder {
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+      }
+
+      select,
+      textarea {
+        font-size: 16px;
+        padding: 4px;
+      }
     </style>
   </head>
   <body>
-    <h2>Below is the list of responses</h2>
+    <h2>Sample Page to check Fabric Integrations</h2>
+    <p>
+      <label for="env">Aegis ENV (to point to respective Aegis env)</label>
+      <select name="env" id="env">
+        <option>non-prod</option>
+        <option>dev</option>
+        <option>devint</option>
+        <option>feature</option>
+        <option selected>local</option>
+      </select>
+      <br />
+      &nbsp;
+      <br />
+      <label for="token">Aegis Token (which is ssotoken for Aegis)</label>
+      <textarea name="token" id="token" rows="2" cols="50"></textarea>
+      <br />
+      &nbsp;
+      <br />
+      <label for="env-fabric"
+        >Fabric ENV (to set fabric request header env)</label
+      >
+      <select name="env-fabric" id="env-fabric">
+        <option>non-prod</option>
+        <option>staging</option>
+        <option selected>sit</option>
+        <option>pnv</option>
+        <option>preprod</option>
+      </select>
+      <br />
+      &nbsp;
+      <br />
+      You can use
+      <a
+        href="https://github.com/SafetyCulture/grpc-web-devtools"
+        target="_blank"
+        >grpc-web-devtools</a
+      >
+      to verify api responses, app is configured to support same
+    </p>
     <hr />
-    <button type="button" id="try-kevin">Get Kevin</button>
-    <button type="button" id="try-wendy">Get Wendy</button>
-    <button type="button" id="try-kevin-account">Get Kevin's Account</button>
-    <button type="button" id="try-wendy-account">Get Wendy's Account</button>
+    <br />
+    &nbsp;
+    <br />
+    <table>
+      <caption>
+        Fabric Calls by direct
+        <code>grpc-web</code>
+        or revers proxyed through
+        <code>aegis</code>
+      </caption>
+      <thead>
+        <tr>
+          <th>Mode</th>
+          <th class="x-broder">Self Service</th>
+          <th>Accounts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Through Aegis</td>
+          <td class="x-broder">
+            <button type="button" id="try-kevin">Get Kevin</button>
+            <button type="button" id="try-wendy">Get Wendy</button>
+          </td>
+          <td>
+            <button type="button" id="try-kevin-account">
+              Get Kevin's Account
+            </button>
+            <button type="button" id="try-wendy-account">
+              Get Wendy's Account
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>Direct Fabric</td>
+          <td class="x-broder">
+            <button type="button" id="try-kevin-direct">Get Kevin</button>
+            <button type="button" id="try-wendy-direct">Get Wendy</button>
+          </td>
+          <td>
+            <button type="button" id="try-kevin-account-direct">
+              Get Kevin's Account
+            </button>
+            <button type="button" id="try-wendy-account-direct">
+              Get Wendy's Account
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Below are the list of responses</h2>
+    <hr />
     <div id="output-format">
       <div>
         <div><b>Success Output</b></div>
