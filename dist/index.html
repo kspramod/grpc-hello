@@ -25,6 +25,7 @@
       table {
         border: 1px solid black;
         border-spacing: 0;
+        min-width: 75%;
       }
 
       td {
@@ -46,11 +47,16 @@
         font-size: 16px;
         padding: 4px;
       }
+
+      .clear {
+        margin-left: 4px;
+      }
     </style>
   </head>
   <body>
     <h2>Sample Page to check Fabric Integrations</h2>
     <p>
+      <h3>Aegis</h3>
       <label for="env">Aegis ENV (to point to respective Aegis env)</label>
       <select name="env" id="env">
         <option>non-prod</option>
@@ -60,26 +66,44 @@
         <option selected>local</option>
       </select>
       <br />
-      &nbsp;
       <br />
       <label for="token">Aegis Token (which is ssotoken for Aegis)</label>
       <textarea name="token" id="token" rows="2" cols="50"></textarea>
       <br />
-      &nbsp;
       <br />
+      <h3>Fabric</h3>
       <label for="env-fabric"
         >Fabric ENV (to set fabric request header env)</label
       >
       <select name="env-fabric" id="env-fabric">
-        <option>non-prod</option>
         <option>staging</option>
         <option selected>sit</option>
         <option>pnv</option>
         <option>preprod</option>
       </select>
       <br />
-      &nbsp;
       <br />
+      <label for="user-name">Username: </label>
+      <input type="text" id="user-name" name="user-name" />&nbsp;
+      <label for="password">Password: </label>
+      <input type="text" id="password" name="password" />
+      <br />
+      <br />
+      <table>
+        <caption>
+          Examples: K-region Test Data
+        </caption>
+        <thead>
+          <tr><th>Name</th><th class="x-broder">Username</th><th>Password</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Kevin</td><td class="x-broder"><code>e9306b6a-adb8-42b4-a705-05ee56e84961</code></td><td><code>gyeoZlUm2AE6jBIJWHeDL2p5KdAqjAmL</code></td></tr>
+          <tr><td>Wendy</td><td class="x-broder"><code>34deae96-72f7-4841-b28b-2a639e0fe1e0</code></td><td><code>8WOvKoFEqW620ZH087c2dcEuxDsACGdl</code></td></tr>
+        </tbody>
+      </table>
+      <br />
+      <br />
+      <h4>Other Details</h4>
       You can use
       <a
         href="https://github.com/SafetyCulture/grpc-web-devtools"
@@ -110,30 +134,22 @@
         <tr>
           <td>Through Aegis</td>
           <td class="x-broder">
-            <button type="button" id="try-kevin">Get Kevin</button>
-            <button type="button" id="try-wendy">Get Wendy</button>
+            <button type="button" id="try-party">Get Party</button>
           </td>
           <td>
-            <button type="button" id="try-kevin-account">
-              Get Kevin's Account
-            </button>
-            <button type="button" id="try-wendy-account">
-              Get Wendy's Account
+            <button type="button" id="try-account">
+              Get Account
             </button>
           </td>
         </tr>
         <tr>
           <td>Direct Fabric</td>
           <td class="x-broder">
-            <button type="button" id="try-kevin-direct">Get Kevin</button>
-            <button type="button" id="try-wendy-direct">Get Wendy</button>
+            <button type="button" id="try-direct">Get Party</button>
           </td>
           <td>
-            <button type="button" id="try-kevin-account-direct">
-              Get Kevin's Account
-            </button>
-            <button type="button" id="try-wendy-account-direct">
-              Get Wendy's Account
+            <button type="button" id="try-account-direct">
+              Get Account
             </button>
           </td>
         </tr>
@@ -143,12 +159,22 @@
     <hr />
     <div id="output-format">
       <div>
-        <div><b>Success Output</b></div>
+        <div>
+          <b>Success Output</b
+          ><button type="button" class="clear" id="clear-success">
+            ❌ Clear
+          </button>
+        </div>
         <hr />
         <p id="output"></p>
       </div>
       <div>
-        <div><b>Error Output</b></div>
+        <div>
+          <b>Error Output</b
+          ><button type="button" class="clear" id="clear-error">
+            ❌ Clear
+          </button>
+        </div>
         <hr />
         <p id="error"></p>
       </div>

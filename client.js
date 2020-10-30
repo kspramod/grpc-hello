@@ -49,6 +49,15 @@ updateFabricEnv = (envFabric) => {
   envFabric = envFabric;
 };
 
+let userNameFabric = "";
+updateFabricUsername = (userName) => {
+  userNameFabric = userName;
+};
+let passwordFabric = "";
+updateFabricPassword = (password) => {
+  passwordFabric = password;
+};
+
 let client = new PartyAPIClient(aegisPath, null, {
   withCredentials: true,
 });
@@ -57,46 +66,33 @@ const clientAccountsDirect = new AccountAPIClient("https://fabric.gcpnp.anz");
 
 const request = new GetPartyRequest();
 
-const USERS = {
-  kevin: {
-    name: "KEVIN WATKINS",
-    userName: "e9306b6a-adb8-42b4-a705-05ee56e84961",
-    password: "gyeoZlUm2AE6jBIJWHeDL2p5KdAqjAmL",
-  },
-  wendy: {
-    name: "WENDY DOBB",
-    userName: "34deae96-72f7-4841-b28b-2a639e0fe1e0",
-    password: "8WOvKoFEqW620ZH087c2dcEuxDsACGdl",
-  },
-};
-
-const handlePartyCallBack = (name, direct) => (err, response) => {
+const handlePartyCallBack = (direct) => (err, response) => {
   const directMessage = `GetParty ${direct ? "DIRECT" : ""} Call \n`;
 
   if (err) {
     const textElement = document.getElementById("error").innerText;
     document.getElementById(
       "error"
-    ).innerText = `${textElement} \n ${directMessage} \n Name: ${name} \n ${err.message} \n ----------------------------------------- `;
+    ).innerText = `${textElement} \n ${directMessage}${err.message} \n ----------------------------------------- `;
     console.log("Error: ", err);
   } else {
     const textElement = document.getElementById("output").innerText;
     document.getElementById(
       "output"
-    ).innerText = `${textElement} \n ${directMessage} \n Name: ${name} \n Legal Name: ${response.getLegalName()} \n Residential Address: ${response.getResidentialAddress()} \n Mailing Address: ${response.getMailingAddress()} \n -----------------------------------------`;
+    ).innerText = `${textElement} \n ${directMessage} \n Legal Name: ${response.getLegalName()} \n Residential Address: ${response.getResidentialAddress()} \n Mailing Address: ${response.getMailingAddress()} \n -----------------------------------------`;
     console.log("Success: ", response.toObject());
   }
 };
 
-const getData = ({ name, userName, password }, direct) => {
+const getData = (direct) => {
   if (direct) {
     clientDirect.getParty(
       request,
       {
         env: envFabric,
-        authorization: `Basic ${btoa(`${userName}:${password}`)}`,
+        authorization: `Basic ${btoa(`${userNameFabric}:${passwordFabric}`)}`,
       },
-      handlePartyCallBack(name, direct)
+      handlePartyCallBack(direct)
     );
   } else {
     client = new PartyAPIClient(aegisPath, null, {
@@ -106,9 +102,9 @@ const getData = ({ name, userName, password }, direct) => {
       request,
       {
         env: envFabric,
-        authorization: `Basic ${btoa(`${userName}:${password}`)}`,
+        authorization: `Basic ${btoa(`${userNameFabric}:${passwordFabric}`)}`,
       },
-      handlePartyCallBack(name)
+      handlePartyCallBack()
     );
   }
 };
@@ -118,32 +114,32 @@ let clientAccounts = new AccountAPIClient(aegisPath, null, {
 });
 const requestAccount = new GetAccountListRequest();
 
-const handleAccountsCallback = (name, direct) => (err, response) => {
+const handleAccountsCallback = (direct) => (err, response) => {
   const directMessage = `Accounts ${direct ? "DIRECT" : ""} Call \n`;
   if (err) {
     const textElement = document.getElementById("error").innerText;
     document.getElementById(
       "error"
-    ).innerText = `${textElement} \n ${directMessage} \n Name: ${name} \n ${err.message} \n ----------------------------------------- `;
+    ).innerText = `${textElement} \n ${directMessage}${err.message} \n ----------------------------------------- `;
     console.log("Error: ", err);
   } else {
     const textElement = document.getElementById("output").innerText;
     document.getElementById(
       "output"
-    ).innerText = `${textElement} \n ${directMessage} \n Name: ${name} \n Accounts List: ${response.getAccountListList()} \n -----------------------------------------`;
+    ).innerText = `${textElement} \n ${directMessage} \n Accounts List: ${response.getAccountListList()} \n -----------------------------------------`;
     console.log("Success: ", response.toObject());
   }
 };
 
-const getAccounts = ({ name, userName, password }, direct) => {
+const getAccounts = (direct) => {
   if (direct) {
     clientAccountsDirect.getAccountList(
       requestAccount,
       {
         env: envFabric,
-        authorization: `Basic ${btoa(`${userName}:${password}`)}`,
+        authorization: `Basic ${btoa(`${userNameFabric}:${passwordFabric}`)}`,
       },
-      handleAccountsCallback(name, direct)
+      handleAccountsCallback(direct)
     );
   } else {
     clientAccounts = new AccountAPIClient(aegisPath, null, {
@@ -154,37 +150,29 @@ const getAccounts = ({ name, userName, password }, direct) => {
       {
         env: envFabric,
       },
-      handleAccountsCallback(name)
+      handleAccountsCallback()
     );
   }
 };
 
-// getData(USERS.kevin);
-
 setTimeout(() => {
-  document.getElementById("try-kevin").onclick = () => {
-    getData(USERS.kevin);
+  document.getElementById("try-party").onclick = () => {
+    getData();
   };
-  document.getElementById("try-wendy").onclick = () => {
-    getData(USERS.wendy);
+  document.getElementById("try-direct").onclick = () => {
+    getData(true);
   };
-  document.getElementById("try-kevin-direct").onclick = () => {
-    getData(USERS.kevin, true);
+  document.getElementById("try-account").onclick = () => {
+    getAccounts();
   };
-  document.getElementById("try-wendy-direct").onclick = () => {
-    getData(USERS.wendy, true);
+  document.getElementById("try-account-direct").onclick = () => {
+    getAccounts(true);
   };
-  document.getElementById("try-kevin-account-direct").onclick = () => {
-    getAccounts(USERS.kevin, true);
+  document.getElementById("user-name").onchange = (event) => {
+    updateFabricUsername(event.target.value);
   };
-  document.getElementById("try-wendy-account-direct").onclick = () => {
-    getAccounts(USERS.wendy, true);
-  };
-  document.getElementById("try-kevin-account").onclick = () => {
-    getAccounts(USERS.kevin);
-  };
-  document.getElementById("try-wendy-account").onclick = () => {
-    getAccounts(USERS.wendy);
+  document.getElementById("password").onchange = (event) => {
+    updateFabricPassword(event.target.value);
   };
   document.getElementById("env").onchange = (event) => {
     updateAegisEnv(event.target.value);
@@ -195,6 +183,12 @@ setTimeout(() => {
   document.getElementById("token").onchange = (event) => {
     document.cookie = `anzssotoken=${event.target.value}; path=/; domain=.gcpnp.anz; secure; samesite=lax`;
     // document.cookie = `anzssotoken=${event.target.value}; path=/; samesite=lax`;
+  };
+  document.getElementById("clear-success").onclick = () => {
+    document.getElementById("output").innerText = "";
+  };
+  document.getElementById("clear-error").onclick = () => {
+    document.getElementById("error").innerText = "";
   };
 }, 1000);
 
