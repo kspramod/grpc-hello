@@ -45,8 +45,8 @@ updateAegisEnv = (env) => {
 };
 
 let envFabric = "sit";
-updateFabricEnv = (envFabric) => {
-  envFabric = envFabric;
+updateFabricEnv = (param) => {
+  envFabric = param;
 };
 
 let userNameFabric = "";
