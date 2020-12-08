@@ -1,183 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>gRPC-Web Example</title>
-    <script src="main.js"></script>
-    <style>
-      #output-format {
-        display: flex;
-        max-width: 600px;
-      }
 
-      #output-format div {
-        padding: 16px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>gRPC-Web Example</title>
+  <script src="main.js"></script>
+  <style>
+    #output-format {
+      display: flex;
+      max-width: 600px;
+    }
 
-      p {
-        margin: 0;
-      }
+    #output-format div {
+      padding: 16px;
+    }
 
-      #output {
-        border-right: 1px solid grey;
-      }
+    p {
+      margin: 0;
+    }
 
-      table {
-        border: 1px solid black;
-        border-spacing: 0;
-        min-width: 75%;
-      }
+    #output {
+      border-right: 1px solid grey;
+    }
 
-      td {
-        padding: 16px;
-        border-top: 1px solid black;
-      }
+    table {
+      border: 1px solid black;
+      border-spacing: 0;
+      min-width: 75%;
+    }
 
-      th {
-        padding: 8px;
-      }
+    td {
+      padding: 16px;
+      border-top: 1px solid black;
+    }
 
-      .x-broder {
-        border-left: 1px solid black;
-        border-right: 1px solid black;
-      }
+    th {
+      padding: 8px;
+    }
 
-      select,
-      textarea {
-        font-size: 16px;
-        padding: 4px;
-      }
+    .x-broder {
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+    }
 
-      .clear {
-        margin-left: 4px;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Sample Page to check Fabric Integrations</h2>
-    <p>
-      <h3>Aegis</h3>
-      <label for="env">Aegis ENV (to point to respective Aegis env)</label>
-      <select name="env" id="env">
-        <option>non-prod</option>
-        <option>dev</option>
-        <option>devint</option>
-        <option>feature</option>
-        <option selected>local</option>
-      </select>
-      <br />
-      <br />
-      <label for="token">Aegis Token (which is ssotoken for Aegis)</label>
-      <textarea name="token" id="token" rows="2" cols="50"></textarea>
-      <br />
-      <br />
-      <h3>Fabric</h3>
-      <label for="env-fabric"
-        >Fabric ENV (to set fabric request header env)</label
-      >
-      <select name="env-fabric" id="env-fabric">
-        <option>staging</option>
-        <option selected>sit</option>
-        <option>pnv</option>
-        <option>preprod</option>
-      </select>
-      <br />
-      <br />
-      <label for="user-name">Username: </label>
-      <input type="text" id="user-name" name="user-name" />&nbsp;
-      <label for="password">Password: </label>
-      <input type="text" id="password" name="password" />
-      <br />
-      <br />
-      <table>
-        <caption>
-          Examples: K-region Test Data
-        </caption>
-        <thead>
-          <tr><th>Name</th><th class="x-broder">Username</th><th>Password</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Kevin</td><td class="x-broder"><code>e9306b6a-adb8-42b4-a705-05ee56e84961</code></td><td><code>gyeoZlUm2AE6jBIJWHeDL2p5KdAqjAmL</code></td></tr>
-          <tr><td>Wendy</td><td class="x-broder"><code>34deae96-72f7-4841-b28b-2a639e0fe1e0</code></td><td><code>8WOvKoFEqW620ZH087c2dcEuxDsACGdl</code></td></tr>
-        </tbody>
-      </table>
-      <br />
-      <br />
-      <h4>Other Details</h4>
-      You can use
-      <a
-        href="https://github.com/SafetyCulture/grpc-web-devtools"
-        target="_blank"
-        >grpc-web-devtools</a
-      >
-      to verify api responses, app is configured to support same
-    </p>
-    <hr />
-    <br />
-    &nbsp;
-    <br />
-    <table>
-      <caption>
-        Fabric Calls by direct
-        <code>grpc-web</code>
-        or revers proxyed through
-        <code>aegis</code>
-      </caption>
-      <thead>
-        <tr>
-          <th>Mode</th>
-          <th class="x-broder">Self Service</th>
-          <th>Accounts</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Through Aegis</td>
-          <td class="x-broder">
-            <button type="button" id="try-party">Get Party</button>
-          </td>
-          <td>
-            <button type="button" id="try-account">
-              Get Account
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>Direct Fabric</td>
-          <td class="x-broder">
-            <button type="button" id="try-direct">Get Party</button>
-          </td>
-          <td>
-            <button type="button" id="try-account-direct">
-              Get Account
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <h2>Below are the list of responses</h2>
-    <hr />
-    <div id="output-format">
-      <div>
-        <div>
-          <b>Success Output</b
-          ><button type="button" class="clear" id="clear-success">
-            ❌ Clear
+    select,
+    textarea {
+      font-size: 16px;
+      padding: 4px;
+    }
+
+    .clear {
+      margin-left: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Sample Page to check Fabric Integrations</h2>
+  <p>
+  <h3>Aegis</h3>
+  <label for="env">Aegis ENV (to point to respective Aegis env)</label>
+  <select name="env" id="env">
+    <option>non-prod</option>
+    <option>dev</option>
+    <option>devint</option>
+    <option>feature</option>
+    <option selected>local</option>
+  </select>
+  <br />
+  <div id="feature-env-wrapper" hidden>
+    <label for="feature-env">Feature ENV</label>
+    <input type="text" name="feature-env" id="feature-env" />
+  </div>
+  <br />
+  <label for="token">Aegis Token (which is ssotoken for Aegis)</label>
+  <textarea name="token" id="token" rows="2" cols="50"></textarea>
+  <br />
+  <br />
+  <h3>Fabric</h3>
+  <label for="env-fabric">Fabric ENV (to set fabric request header env)</label>
+  <select name="env-fabric" id="env-fabric">
+    <option>staging</option>
+    <option selected>sit</option>
+    <option>pnv</option>
+    <option>preprod</option>
+  </select>
+  <br />
+  <br />
+  <label for="user-name">Username: </label>
+  <input type="text" id="user-name" name="user-name" />&nbsp;
+  <label for="password">Password: </label>
+  <input type="text" id="password" name="password" />
+  <br />
+  <br />
+  <table>
+    <caption>
+      Examples: K-region Test Data
+    </caption>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th class="x-broder">Username</th>
+        <th>Password</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Kevin</td>
+        <td class="x-broder"><code>e9306b6a-adb8-42b4-a705-05ee56e84961</code></td>
+        <td><code>gyeoZlUm2AE6jBIJWHeDL2p5KdAqjAmL</code></td>
+      </tr>
+      <tr>
+        <td>Wendy</td>
+        <td class="x-broder"><code>34deae96-72f7-4841-b28b-2a639e0fe1e0</code></td>
+        <td><code>8WOvKoFEqW620ZH087c2dcEuxDsACGdl</code></td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <br />
+  <h4>Other Details</h4>
+  You can use
+  <a href="https://github.com/SafetyCulture/grpc-web-devtools" target="_blank">grpc-web-devtools</a>
+  to verify api responses, app is configured to support same
+  </p>
+  <hr />
+  <br />
+  &nbsp;
+  <br />
+  <table>
+    <caption>
+      Fabric Calls by direct
+      <code>grpc-web</code>
+      or revers proxyed through
+      <code>aegis</code>
+    </caption>
+    <thead>
+      <tr>
+        <th>Mode</th>
+        <th class="x-broder">Self Service</th>
+        <th>Accounts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Through Aegis</td>
+        <td class="x-broder">
+          <button type="button" id="try-party">Get Party</button>
+        </td>
+        <td>
+          <button type="button" id="try-account">
+            Get Account
           </button>
-        </div>
-        <hr />
-        <p id="output"></p>
-      </div>
-      <div>
-        <div>
-          <b>Error Output</b
-          ><button type="button" class="clear" id="clear-error">
-            ❌ Clear
+        </td>
+      </tr>
+      <tr>
+        <td>Direct Fabric</td>
+        <td class="x-broder">
+          <button type="button" id="try-direct">Get Party</button>
+        </td>
+        <td>
+          <button type="button" id="try-account-direct">
+            Get Account
           </button>
-        </div>
-        <hr />
-        <p id="error"></p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>Below are the list of responses</h2>
+  <hr />
+  <div id="output-format">
+    <div>
+      <div>
+        <b>Success Output</b><button type="button" class="clear" id="clear-success">
+          ❌ Clear
+        </button>
       </div>
+      <hr />
+      <p id="output"></p>
     </div>
-  </body>
+    <div>
+      <div>
+        <b>Error Output</b><button type="button" class="clear" id="clear-error">
+          ❌ Clear
+        </button>
+      </div>
+      <hr />
+      <p id="error"></p>
+    </div>
+  </div>
+</body>
+
 </html>

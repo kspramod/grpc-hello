@@ -24,6 +24,7 @@ document.cookie = `anzssotoken=${getParams(
 
 let aegisPath = "http://ig-auth-local.default.svc.cluster.local:80";
 updateAegisEnv = (env) => {
+  document.getElementById("feature-env-wrapper").hidden = true;
   switch (env) {
     case "non-prod":
       aegisPath = "https://identity-services-np-edge.apps.x.gcpnp.anz";
@@ -38,10 +39,15 @@ updateAegisEnv = (env) => {
     case "feature":
       aegisPath =
         "https://abt-12755-fabric.identity-services-ldev-edge.apps-dev.x.gcpnp.anz";
+      document.getElementById("feature-env").value = aegisPath;
+      document.getElementById("feature-env-wrapper").hidden = false;
       break;
     default:
       break;
   }
+};
+updateAegisFeatureEnv = (env) => {
+  aegisPath = env;
 };
 
 let envFabric = "sit";
@@ -176,6 +182,9 @@ setTimeout(() => {
   };
   document.getElementById("env").onchange = (event) => {
     updateAegisEnv(event.target.value);
+  };
+  document.getElementById("feature-env").onchange = (event) => {
+    updateAegisFeatureEnv(event.target.value);
   };
   document.getElementById("env-fabric").onchange = (event) => {
     updateFabricEnv(event.target.value);
