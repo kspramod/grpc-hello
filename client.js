@@ -50,6 +50,11 @@ updateAegisFeatureEnv = (env) => {
   aegisPath = env;
 };
 
+let aegisToken = "";
+updateAegisToken = (param) => {
+  aegisToken = param;
+};
+
 let envFabric = "sit";
 updateFabricEnv = (param) => {
   envFabric = param;
@@ -108,7 +113,7 @@ const getData = (direct) => {
       request,
       {
         env: envFabric,
-        authorization: `Basic ${btoa(`${userNameFabric}:${passwordFabric}`)}`,
+        // authorization: `Bearer ${aegisToken}`,
       },
       handlePartyCallBack()
     );
@@ -155,6 +160,7 @@ const getAccounts = (direct) => {
       requestAccount,
       {
         env: envFabric,
+        // authorization: `Bearer ${aegisToken}`,
       },
       handleAccountsCallback()
     );
@@ -191,6 +197,7 @@ setTimeout(() => {
   };
   document.getElementById("token").onchange = (event) => {
     document.cookie = `anzssotoken=${event.target.value}; path=/; domain=.gcpnp.anz; secure; samesite=lax`;
+    updateAegisToken(event.target.value);
     // document.cookie = `anzssotoken=${event.target.value}; path=/; samesite=lax`;
   };
   document.getElementById("clear-success").onclick = () => {
