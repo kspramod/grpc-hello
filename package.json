@@ -14,7 +14,7 @@
   "author": "kspramod",
   "license": "ISC",
   "devDependencies": {
-    "@grpc/grpc-js": "^1.1.3",
+    "@grpc/grpc-js": "^1.1.8",
     "@grpc/proto-loader": "^0.5.5",
     "@types/google-protobuf": "^3.7.2",
     "@types/node": "^14.0.27",
